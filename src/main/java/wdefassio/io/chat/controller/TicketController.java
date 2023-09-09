@@ -13,20 +13,15 @@ import java.util.Optional;
 @RestController
 @RequestMapping("v1/ticket")
 @RequiredArgsConstructor
+@CrossOrigin()
 public class TicketController {
-
-
     private final TicketService ticketService;
 
     @PostMapping
-    @CrossOrigin("http://localhost:3000")
     public Map<String, String> buildTicket(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) throws JwkException {
-
         String token = Optional.ofNullable(authorization).map(it -> it.replace("Bearer ", ""))
                 .orElse("");
-
         String ticket = ticketService.buildAndSaveTicket(token);
-
         return Map.of("ticket", ticket);
     }
 
